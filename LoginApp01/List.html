@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <!--<script src="https://www.gstatic.com/firebasejs/5.5.5/firebase-app.js"></script>-->
+    <!--<script src="https://www.gstatic.com/firebasejs/5.5.5/firebase-auth.js"></script>-->
+    <script src="https://www.gstatic.com/firebasejs/5.5.9/firebase.js"></script>
+    <script>
+        var config = {
+            apiKey: "AIzaSyDbpQja-x7dOpDgHZ5i1v9g-lHZfRAbNO4",
+            authDomain: "log-in-app-01.firebaseapp.com",
+            databaseURL: "https://log-in-app-01.firebaseio.com",
+            projectId: "log-in-app-01",
+            storageBucket: "log-in-app-01.appspot.com",
+            messagingSenderId: "165755230062"
+        };
+        firebase.initializeApp(config);
+    </script>
+    <style>
+        body {
+            background-image: url("http://www.hdwallpaperspulse.com/wp-content/uploads/2012/10/Opera-Background-Blue-Swirls1.jpg");
+        }
+    </style>
+</head>
+<body>
+<!--<button data-target="modal1" class="btn modal-trigger">Modal</button>-->
+<!-- Modal Trigger -->
+<a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
+
+<!-- Modal Structure -->
+<div id="modal1" class="modal">
+    <div class="modal-content">
+        <input type="text" placeholder="title" id="title">
+        <input type="text" placeholder="description" id="description">
+        <input type="text" placeholder="image URL" id="image">
+    </div>
+    <div class="modal-footer">
+        <button class = "waves-effect waves-light btn modal-close" onclick="saveItem()">Save</button>
+    </div>
+</div>
+<!--<ol id="list"></ol>-->
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('.modal');
+        var instances = M.Modal.init(elems);
+    })
+
+
+    var logInuser = localStorage.getItem('userId')
+    var db = firebase.firestore();
+    db.settings({
+        timestampsInSnapshots: true
+    });
+
+//    var list = document.getElementById('list');
+    var title = document.getElementById('title');
+    var description = document.getElementById('description');
+    var image = document.getElementById('image');
+//    var listItems = [];
+
+    function saveItem() {
+        db.collection('mark').add({
+            title: title.value,
+            description: description.value,
+            image: image.value,
+            userID: logInuser,
+            time: Date.now()
+        })
+        title.value = "";
+        description.value = "";
+        image.value = "";
+    }
+    db.collection('mark').onSnapshot(function (docs) {
+        console.log(docs.docChanges())
+        docs.docChanges().forEach(function (change) {
+            var d = change.doc.data();
+            d.id = change.doc.id;
+             })
+    })
+</script>
+<div class="col s6">
+    <div class="row">
+        <div class="col s12 m6">
+            <div class="card blue-grey darken-1">
+                <div class="card-content white-text">
+                    <p>To Post Your Own image Please Sign In First.</p>
+                </div>
+                <div class="card-action">
+                    <a href="Sign%20In.html">Sign In</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign In</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/5.5.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.5/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.9/firebase.js"></script>
+    <script>
+        var config = {
+            apiKey: "AIzaSyDbpQja-x7dOpDgHZ5i1v9g-lHZfRAbNO4",
+            authDomain: "log-in-app-01.firebaseapp.com",
+            databaseURL: "https://log-in-app-01.firebaseio.com",
+            projectId: "log-in-app-01",
+            storageBucket: "log-in-app-01.appspot.com",
+            messagingSenderId: "165755230062"
+        };
+        firebase.initializeApp(config);
+    </script>
+    <style>
+        body {
+            background-image: url("http://www.hdwallpaperspulse.com/wp-content/uploads/2012/10/Opera-Background-Blue-Swirls1.jpg");
+        }
+    </style>
+</head>
+<body>
+<div class="col s6">
+    <div class="row">
+        <div class="col s12 m6">
+            <div class="card">
+                <input type="email" placeholder="email" id="gmail"><br>
+                <input type="password" placeholder="password" id="password"><br>
+                <button class="waves-effect waves-light btn" onclick="signIn()">Sign In</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col s6">
+    <div class="row">
+        <div class="col s12 m6">
+            <div class="card blue-grey darken-1">
+                <div class="card-content white-text">
+                    <p>If You Don't Have An Account Then Sign Up First. </p>
+                </div>
+                <div class="card-action">
+                    <a href="Sign Up.html">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var password = document.getElementById('password');
+    var gmail = document.getElementById('gmail');
+    function signIn() {
+        firebase.auth().signInWithEmailAndPassword(gmail.value, password.value).then(function (data) {
+            console.log(data);
+            localStorage.setItem('userId', data.user.uid)
+            location.assign('/Log%20in%20App%2001/List.html')
+        }).catch(function (error) {
+            console.log(error);
+            alert(error.message);
+        });
+    }
+    </script>
+</body>
+</html>
